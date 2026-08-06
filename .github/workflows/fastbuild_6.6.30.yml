@@ -1,4 +1,4 @@
-name: 6.6.30 欧加真OKI内核快速构建
+name: 6.6.30 base ver
 
 env:
   TZ: Asia/Shanghai
@@ -95,6 +95,11 @@ on:
         required: false
         type: string
         default: ''
+      enable_thinlto:
+        description: '是否启用thinlto优化'
+        required: true
+        type: boolean
+        default: 'true'
 
 jobs:
   build:
@@ -359,7 +364,15 @@ jobs:
           echo "CONFIG_KSU_SUSFS_SPOOF_CMDLINE_OR_BOOTCONFIG=y" >> ./common/arch/arm64/configs/gki_defconfig
           echo "CONFIG_KSU_SUSFS_OPEN_REDIRECT=y" >> ./common/arch/arm64/configs/gki_defconfig
           echo "CONFIG_KSU_SUSFS_SUS_MAP=y" >> ./common/arch/arm64/configs/gki_defconfig
-          
+
+      - name: 启用ThinLTO优化
+        if: inputs.enable_thinlto
+        run: |
+          cd kernel_workspace
+          # 启用ThinLTO
+          echo "CONFIG_LTO_CLANG_THIN=y" >> ./common/arch/arm64/configs/gki_defconfig
+          echo "CONFIG_THINLTO=y" >> ./common/arch/arm64/configs/gki_defconfig
+      
       - name: 添加 KSU & 其他配置项
         run: |
           cd kernel_workspace
@@ -387,6 +400,7 @@ jobs:
           cd common
           wget https://github.com/$GITHUB_REPOSITORY/raw/refs/heads/$GITHUB_REF_NAME/other_patch/cve-2026-43499-rtmutex-6.6.patch
           patch -p1 -F 3 < cve-2026-43499-rtmutex-6.6.patch
+
           
       - name: 启用网络功能增强优化配置
         if: inputs.better_net
