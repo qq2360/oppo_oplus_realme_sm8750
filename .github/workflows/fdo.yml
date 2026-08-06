@@ -377,6 +377,12 @@ jobs:
             echo "CONFIG_CRYPTO_LZ4KD=y" >> ./common/arch/arm64/configs/gki_defconfig
             echo "CONFIG_CRYPTO_842=y" >> ./common/arch/arm64/configs/gki_defconfig
           fi
+          # 启用CoreSight
+          echo "CONFIG_CORESIGHT=y" >> ./common/arch/arm64/configs/gki_defconfig
+          echo "CONFIG_CORESIGHT_SOURCE_ETM4X=y" >> ./common/arch/arm64/configs/gki_defconfig
+          echo "CONFIG_CORESIGHT_LINKS_AND_SINKS=y" >> ./common/arch/arm64/configs/gki_defconfig
+          echo "CONFIG_CORESIGHT_FUNNEL=y" >> ./common/arch/arm64/configs/gki_defconfig
+          echo "CONFIG_PID_IN_CONTEXTIDR=y" >> ./common/arch/arm64/configs/gki_defconfig
           # 开启O2编译优化配置
           echo "CONFIG_CC_OPTIMIZE_FOR_PERFORMANCE=y" >> ./common/arch/arm64/configs/gki_defconfig
           # 启用AutoFDO支持
