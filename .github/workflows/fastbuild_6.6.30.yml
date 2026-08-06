@@ -1,4 +1,4 @@
-name: 6.6.30 base ver
+name: 6.6.30 欧加真OKI内核快速构建
 
 env:
   TZ: Asia/Shanghai
