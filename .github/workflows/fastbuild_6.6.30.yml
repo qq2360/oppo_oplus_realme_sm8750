@@ -100,6 +100,11 @@ on:
         required: true
         type: boolean
         default: 'true'
+      enable_optimize_from_wild_kernel:
+        description: '是否启用来自WildKernel项目的一些优化补丁'
+        required: true
+        type: boolean
+        default: 'true'
 
 jobs:
   build:
@@ -372,6 +377,61 @@ jobs:
           # 启用ThinLTO
           echo "CONFIG_LTO_CLANG_THIN=y" >> ./common/arch/arm64/configs/gki_defconfig
           echo "CONFIG_THINLTO=y" >> ./common/arch/arm64/configs/gki_defconfig
+
+      - name: 启用一些来自WildKernel内核的优化补丁
+        if: inputs.enable_optimize_from_wild_kernel
+        run: |
+          cd ./common
+          wget https://github.com/$GITHUB_REPOSITORY/raw/refs/heads/$GITHUB_REF_NAME/other_patch/add_limitation_scaling_min_freq.patch
+          patch -p1 -N -F 3 < add_limitation_scaling_min_freq.patch || true
+          wget https://github.com/$GITHUB_REPOSITORY/raw/refs/heads/$GITHUB_REF_NAME/other_patch/add_timeout_wakelocks_globally.patch
+          patch -p1 -N -F 3 < add_timeout_wakelocks_globally.patch || true
+          wget https://github.com/$GITHUB_REPOSITORY/raw/refs/heads/$GITHUB_REF_NAME/other_patch/adjust_cpu_scan_order.patch
+          patch -p1 -N -F 3 < adjust_cpu_scan_order.patch || true
+          wget https://github.com/$GITHUB_REPOSITORY/raw/refs/heads/$GITHUB_REF_NAME/other_patch/avoid_extra_s2idle_wake_attempts.patch
+          patch -p1 -N -F 3 < avoid_extra_s2idle_wake_attempts.patch || true
+          wget https://github.com/$GITHUB_REPOSITORY/raw/refs/heads/$GITHUB_REF_NAME/other_patch/clear_page_16bytes_align.patch
+          patch -p1 -N -F 3 < clear_page_16bytes_align.patch || true
+          wget https://github.com/$GITHUB_REPOSITORY/raw/refs/heads/$GITHUB_REF_NAME/other_patch/disable_cache_hot_buddy.patch
+          patch -p1 -N -F 3 < disable_cache_hot_buddy.patch || true
+          wget https://github.com/$GITHUB_REPOSITORY/raw/refs/heads/$GITHUB_REF_NAME/other_patch/f2fs_enlarge_min_fsync_blocks.patch
+          patch -p1 -N -F 3 < f2fs_enlarge_min_fsync_blocks.patch || true
+          wget https://github.com/$GITHUB_REPOSITORY/raw/refs/heads/$GITHUB_REF_NAME/other_patch/f2fs_reduce_congestion.patch
+          patch -p1 -N -F 3 < f2fs_reduce_congestion.patch || true
+          wget https://github.com/$GITHUB_REPOSITORY/raw/refs/heads/$GITHUB_REF_NAME/other_patch/file_struct_8bytes_align.patch
+          patch -p1 -N -F 3 < file_struct_8bytes_align.patch || true
+          wget https://github.com/$GITHUB_REPOSITORY/raw/refs/heads/$GITHUB_REF_NAME/other_patch/force_tcp_nodelay.patch
+          patch -p1 -N -F 3 < force_tcp_nodelay.patch || true
+          wget https://github.com/$GITHUB_REPOSITORY/raw/refs/heads/$GITHUB_REF_NAME/other_patch/increase_ext4_default_commit_age.patch
+          patch -p1 -N -F 3 < increase_ext4_default_commit_age.patch || true
+          wget https://github.com/$GITHUB_REPOSITORY/raw/refs/heads/$GITHUB_REF_NAME/other_patch/increase_sk_mem_packets.patch
+          patch -p1 -N -F 3 < increase_sk_mem_packets.patch || true
+          wget https://github.com/$GITHUB_REPOSITORY/raw/refs/heads/$GITHUB_REF_NAME/other_patch/int_sqrt.patch
+          patch -p1 -N -F 3 < int_sqrt.patch || true
+          wget https://github.com/$GITHUB_REPOSITORY/raw/refs/heads/$GITHUB_REF_NAME/other_patch/mem_opt_prefetch.patch
+          patch -p1 -N -F 3 < mem_opt_prefetch.patch || true
+          wget https://github.com/$GITHUB_REPOSITORY/raw/refs/heads/$GITHUB_REF_NAME/other_patch/minimise_wakeup_time.patch
+          patch -p1 -N -F 3 < minimise_wakeup_time.patch || true
+          wget https://github.com/$GITHUB_REPOSITORY/raw/refs/heads/$GITHUB_REF_NAME/other_patch/optimise_memcmp.patch
+          patch -p1 -N -F 3 < optimise_memcmp.patch || true
+          wget https://github.com/$GITHUB_REPOSITORY/raw/refs/heads/$GITHUB_REF_NAME/other_patch/optimized_mem_operations.patch
+          patch -p1 -N -F 3 < optimized_mem_operations.patch || true
+          wget https://github.com/$GITHUB_REPOSITORY/raw/refs/heads/$GITHUB_REF_NAME/other_patch/re_write_limitation_scaling_min_freq.patch
+          patch -p1 -N -F 3 < re_write_limitation_scaling_min_freq.patch || true
+          wget https://github.com/$GITHUB_REPOSITORY/raw/refs/heads/$GITHUB_REF_NAME/other_patch/reduce_cache_pressure.patch
+          patch -p1 -N -F 3 < reduce_cache_pressure.patch || true
+          wget https://github.com/$GITHUB_REPOSITORY/raw/refs/heads/$GITHUB_REF_NAME/other_patch/reduce_freeze_timeout.patch
+          patch -p1 -N -F 3 < reduce_freeze_timeout.patch || true
+          wget https://github.com/$GITHUB_REPOSITORY/raw/refs/heads/$GITHUB_REF_NAME/other_patch/reduce_gc_thread_sleep_time.patch
+          patch -p1 -N -F 3 < reduce_gc_thread_sleep_time.patch || true
+          wget https://github.com/$GITHUB_REPOSITORY/raw/refs/heads/$GITHUB_REF_NAME/other_patch/reduce_pci_pme_wakeups.patch
+          patch -p1 -N -F 3 < reduce_pci_pme_wakeups.patch || true
+          wget https://github.com/$GITHUB_REPOSITORY/raw/refs/heads/$GITHUB_REF_NAME/other_patch/silence_irq_cpu_logspam.patch
+          patch -p1 -N -F 3 < silence_irq_cpu_logspam.patch || true
+          wget https://github.com/$GITHUB_REPOSITORY/raw/refs/heads/$GITHUB_REF_NAME/other_patch/silence_system_logspam.patch
+          patch -p1 -N -F 3 < silence_system_logspam.patch || true
+          wget https://github.com/$GITHUB_REPOSITORY/raw/refs/heads/$GITHUB_REF_NAME/other_patch/use_unlikely_wrap_cpufreq.patch
+          patch -p1 -N -F 3 < use_unlikely_wrap_cpufreq.patch || true
       
       - name: 添加 KSU & 其他配置项
         run: |
