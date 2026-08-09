@@ -381,6 +381,7 @@ jobs:
       - name: 启用一些来自WildKernel内核的优化补丁
         if: inputs.enable_optimize_from_wild_kernel
         run: |
+          cd kernel_workspace
           cd ./common
           wget https://github.com/$GITHUB_REPOSITORY/raw/refs/heads/$GITHUB_REF_NAME/other_patch/add_limitation_scaling_min_freq.patch
           patch -p1 -N -F 3 < add_limitation_scaling_min_freq.patch || true
