@@ -387,7 +387,7 @@ jobs:
         if: inputs.enable_mglru
         run: |
           cd kernel_workspace
-          # 启用ThinLTO
+          # 启用MGLRU
           echo "CONFIG_LRU_GEN=y" >> ./common/arch/arm64/configs/gki_defconfig
           echo "CONFIG_LRU_GEN_ENABLED=y" >> ./common/arch/arm64/configs/gki_defconfig
 
