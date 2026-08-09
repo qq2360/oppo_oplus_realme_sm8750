@@ -433,14 +433,6 @@ jobs:
           patch -p1 -N -F 3 < silence_system_logspam.patch || true
           wget https://github.com/$GITHUB_REPOSITORY/raw/refs/heads/$GITHUB_REF_NAME/other_patch/use_unlikely_wrap_cpufreq.patch
           patch -p1 -N -F 3 < use_unlikely_wrap_cpufreq.patch || true
-          wget https://github.com/$GITHUB_REPOSITORY/raw/refs/heads/$GITHUB_REF_NAME/other_patch/mglru_anon_only.patch
-          patch -p1 -N -F 3 < mglru_anon_only.patch || true
-          wget https://github.com/$GITHUB_REPOSITORY/raw/refs/heads/$GITHUB_REF_NAME/other_patch/e8400a0.patch
-          patch -p1 -N -F 3 < e8400a0.patch || true
-          wget https://github.com/$GITHUB_REPOSITORY/raw/refs/heads/$GITHUB_REF_NAME/other_patch/c0cd6f5.patch
-          patch -p1 -N -F 3 < c0cd6f5.patch || true
-          wget https://github.com/$GITHUB_REPOSITORY/raw/refs/heads/$GITHUB_REF_NAME/other_patch/a09e19e.patch
-          patch -p1 -N -F 3 < a09e19e.patch || true
       
       - name: 添加 KSU & 其他配置项
         run: |
