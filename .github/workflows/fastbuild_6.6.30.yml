@@ -105,6 +105,11 @@ on:
         required: true
         type: boolean
         default: 'true'
+      enable_mglru:
+        description: '是否启用mglru'
+        required: true
+        type: boolean
+        default: 'true'
 
 jobs:
   build:
@@ -377,6 +382,14 @@ jobs:
           # 启用ThinLTO
           echo "CONFIG_LTO_CLANG_THIN=y" >> ./common/arch/arm64/configs/gki_defconfig
           echo "CONFIG_THINLTO=y" >> ./common/arch/arm64/configs/gki_defconfig
+
+      - name: 启用MGLRU
+        if: inputs.enable_mglru
+        run: |
+          cd kernel_workspace
+          # 启用ThinLTO
+          echo "CONFIG_LRU_GEN=y" >> ./common/arch/arm64/configs/gki_defconfig
+          echo "CONFIG_LRU_GEN_ENABLED=y" >> ./common/arch/arm64/configs/gki_defconfig
 
       - name: 启用一些来自WildKernel内核的优化补丁
         if: inputs.enable_optimize_from_wild_kernel
