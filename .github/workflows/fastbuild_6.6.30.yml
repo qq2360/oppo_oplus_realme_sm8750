@@ -150,11 +150,11 @@ jobs:
           mv "android_kernel_common_oneplus_sm8750-oneplus-sm8750_v_15.0.0_oneplus_13" common &&
           rm -rf common.zip &
           
-          echo "正在克隆llvm-clang18工具链..." &&
-          mkdir -p clang18 &&
-          aria2c -s16 -x16 -k1M https://github.com/cctv18/oneplus_sm8650_toolchain/releases/download/LLVM-Clang18-r510928/clang-r510928.zip -o clang.zip &&
-          unzip -q clang.zip -d clang18 &&
-          rm -rf clang.zip &
+          echo "正在克隆llvm-clang19工具链..." &&
+          mkdir -p clang19 &&
+          aria2c -s16 -x16 -k1M https://github.com/ZyCromerZ/Clang/releases/download/19.0.0git-20240723-release/Clang-19.0.0git-20240723.tar.gz -o clang.tar.gz &&
+          tar -xzf clang.tar.gz -C clang19 &&
+          rm -rf clang.tar.gz &
           
           echo "正在克隆构建工具..." &&
           aria2c -s16 -x16 -k1M https://github.com/cctv18/oneplus_sm8650_toolchain/releases/download/LLVM-Clang18-r510928/build-tools.zip -o build-tools.zip &&
@@ -162,7 +162,7 @@ jobs:
           rm -rf build-tools.zip &
           
           wait
-          echo "所有源码及llvm-Clang18工具链初始化完成！"
+          echo "所有源码及llvm-Clang19工具链初始化完成！"
           echo "正在去除 ABI 保护 & 去除 dirty 后缀..."
           rm common/android/abi_gki_protected_exports_* || true
           for f in common/scripts/setlocalversion; do
@@ -662,9 +662,9 @@ jobs:
         run: |
           WORKDIR="$(pwd)"
           export PATH="/usr/lib/ccache:$PATH"
-          export PATH="$WORKDIR/kernel_workspace/clang18/bin:$PATH"
+          export PATH="$WORKDIR/kernel_workspace/clang19/bin:$PATH"
           export PATH="$WORKDIR/kernel_workspace/build-tools/bin:$PATH"
-          CLANG_DIR="$WORKDIR/kernel_workspace/clang18/bin"
+          CLANG_DIR="$WORKDIR/kernel_workspace/clang19/bin"
           CLANG_VERSION="$($CLANG_DIR/clang --version | head -n 1)"
           LLD_VERSION="$($CLANG_DIR/ld.lld --version | head -n 1)"
           echo "编译器信息:"
