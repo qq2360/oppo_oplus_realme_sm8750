@@ -458,7 +458,6 @@ jobs:
           sed -i 's/SCHED_FEAT(SIS_PROP, false)/SCHED_FEAT(SIS_PROP, true)/' kernel/sched/features.h
           cd ..
           echo "CONFIG_THP_SWAP=y" >> ./common/arch/arm64/configs/gki_defconfig
-          echo "CONFIG_LLVM_POLLY=y" >> ./common/arch/arm64/configs/gki_defconfig
           echo "CONFIG_RCU_EXPERT=y" >> ./common/arch/arm64/configs/gki_defconfig
           echo "CONFIG_RCU_NOCB_CPU=y" >> ./common/arch/arm64/configs/gki_defconfig
           echo "CONFIG_RCU_NOCB_CPU_DEFAULT_ALL=y" >> ./common/arch/arm64/configs/gki_defconfig
@@ -730,8 +729,10 @@ jobs:
           sudo rm -rf /usr/local/lib/android &
           sudo rm -rf /opt/ghc &
           sudo rm -rf /opt/hostedtoolcache/CodeQL &
-          make -j$(nproc --all) LLVM=1 ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- CC="ccache clang" LD="ld.lld" HOSTLD=ld.lld O=out KCFLAGS+=-O2 KCFLAGS+=-Wno-error gki_defconfig &&
-          make -j$(nproc --all) LLVM=1 ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- CC="$(pwd)/cc-wrapper" LD="$(pwd)/ld-wrapper" HOSTLD=ld.lld O=out KCFLAGS+=-O2 KCFLAGS+=-Wno-error Image
+          
+          KCFLAGS_EXTRA="-mcpu=oryon-1 -fno-math-errno -fno-strict-aliasing -fno-semantic-interposition -mllvm -enable-misched=true -falign-functions=32 -mllvm -enable-gvn-hoist -mllvm -enable-load-pre"
+          make -j$(nproc --all) LLVM=1 ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- CC="ccache clang" LD="ld.lld" HOSTLD=ld.lld O=out KCFLAGS+=-O2 KCFLAGS+=-Wno-error KCFLAGS+="$KCFLAGS_EXTRA" gki_defconfig &&
+          make -j$(nproc --all) LLVM=1 ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- CC="$(pwd)/cc-wrapper" LD="$(pwd)/ld-wrapper" HOSTLD=ld.lld O=out KCFLAGS+=-O2 KCFLAGS+=-Wno-error KCFLAGS+="$KCFLAGS_EXTRA" Image
           
           # 编译后时间劫持二次校验
           echo "--- 编译后环境时间: $(LD_PRELOAD=$PRELOAD_LIBS date) ---"
