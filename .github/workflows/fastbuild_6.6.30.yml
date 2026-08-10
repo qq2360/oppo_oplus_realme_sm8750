@@ -390,6 +390,9 @@ jobs:
           # 启用MGLRU
           echo "CONFIG_LRU_GEN=y" >> ./common/arch/arm64/configs/gki_defconfig
           echo "CONFIG_LRU_GEN_ENABLED=y" >> ./common/arch/arm64/configs/gki_defconfig
+          echo "CONFIG_DAMON_RECLAIM=y" >> ./common/arch/arm64/configs/gki_defconfig
+          echo "CONFIG_DAMON_LRU_SORT=y" >> ./common/arch/arm64/configs/gki_defconfig
+          
 
       - name: 启用一些来自WildKernel内核的优化补丁
         if: inputs.enable_optimize_from_wild_kernel
@@ -450,6 +453,17 @@ jobs:
       - name: 添加 KSU & 其他配置项
         run: |
           cd kernel_workspace
+          cd common
+          sed -i 's/SCHED_FEAT(HRTICK, false)/SCHED_FEAT(HRTICK, true)/' kernel/sched/features.h
+          sed -i 's/SCHED_FEAT(SIS_PROP, false)/SCHED_FEAT(SIS_PROP, true)/' kernel/sched/features.h
+          cd ..
+          echo "CONFIG_THP_SWAP=y" >> ./common/arch/arm64/configs/gki_defconfig
+          echo "CONFIG_LLVM_POLLY=y" >> ./common/arch/arm64/configs/gki_defconfig
+          echo "CONFIG_RCU_EXPERT=y" >> ./common/arch/arm64/configs/gki_defconfig
+          echo "CONFIG_RCU_NOCB_CPU=y" >> ./common/arch/arm64/configs/gki_defconfig
+          echo "CONFIG_RCU_NOCB_CPU_DEFAULT_ALL=y" >> ./common/arch/arm64/configs/gki_defconfig
+          echo "CONFIG_HZ_300=y" >> ./common/arch/arm64/configs/gki_defconfig
+          echo "CONFIG_HZ=300" >> ./common/arch/arm64/configs/gki_defconfig
           echo "CONFIG_KSU=y" >> ./common/arch/arm64/configs/gki_defconfig
           if [[ "${{ github.event.inputs.susfs_enable }}" == "false" ]]; then
             echo "CONFIG_KSU_SUSFS=n" >> ./common/arch/arm64/configs/gki_defconfig
