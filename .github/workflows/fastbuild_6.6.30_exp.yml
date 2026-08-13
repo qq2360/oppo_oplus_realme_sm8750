@@ -152,7 +152,7 @@ jobs:
           
           echo "正在克隆llvm-clang19工具链..." &&
           mkdir -p clang19 &&
-          aria2c -s16 -x16 -k1M https://github.com/ZyCromerZ/Clang/releases/download/19.0.0git-20240723-release/Clang-19.0.0git-20240723.tar.gz -o clang.zip &&
+          aria2c -s16 -x16 -k1M https://github.com/ZyCromerZ/Clang/releases/download/19.0.0git-20240723-release/Clang-19.0.0git-20240723.tar.gz -o clang.tar.gz &&
           tar -xf clang.tar.gz -C clang19 &&
           rm -rf clang.zip &
           
