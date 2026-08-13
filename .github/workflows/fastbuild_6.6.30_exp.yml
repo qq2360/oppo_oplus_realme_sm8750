@@ -930,6 +930,7 @@ jobs:
           EOF
 
           gh release create "${{ env.TAG_HEAD }}-${{ env.TIME }}" \
+            --prerelease \
             --repo "${{ github.repository }}" \
             --title "${{ env.TAG_HEAD }}-${{ env.FULL_VERSION }}" \
             --notes-file release_notes.md \
