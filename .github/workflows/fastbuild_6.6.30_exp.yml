@@ -494,6 +494,9 @@ jobs:
           cd common
           wget https://github.com/$GITHUB_REPOSITORY/raw/refs/heads/$GITHUB_REF_NAME/other_patch/cve-2026-43499-rtmutex-6.6.patch
           patch -p1 -F 3 < cve-2026-43499-rtmutex-6.6.patch
+          # 应用 Pelt 16ms 补丁
+          wget https://github.com/$GITHUB_REPOSITORY/raw/refs/heads/$GITHUB_REF_NAME/other_patch/pelt_16ms.patch
+          patch -p1 -F 3 < pelt_16ms.patch
 
           
       - name: 启用网络功能增强优化配置
