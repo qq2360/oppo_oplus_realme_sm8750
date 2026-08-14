@@ -332,6 +332,8 @@ jobs:
         run: |
           echo "正在添加lz4 1.10.0 & zstd 1.5.7补丁…"
           cd kernel_workspace
+          # ZRAM集成到内核里面，避免使用模块挂载
+          sed -i 's/CONFIG_ZRAM=m/CONFIG_ZRAM=y/' ./common/arch/arm64/configs/gki_defconfig || true
           echo "CONFIG_ZRAM_MULTI_COMP=y" >> ./common/arch/arm64/configs/gki_defconfig
           echo "CONFIG_ZRAM_MEMORY_TRACKING=y" >> ./common/arch/arm64/configs/gki_defconfig
           echo "CONFIG_ZRAM_TRACK_ENTRY_ACTIME=y" >> ./common/arch/arm64/configs/gki_defconfig
