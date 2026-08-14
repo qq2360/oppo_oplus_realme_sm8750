@@ -515,8 +515,8 @@ jobs:
           #define LOAD_AVG_MAX 24130
           PELTEOF
           # 开启NEOM和SIMD
-          echo 'CONFIG_ARM64_NEON=y' >> ./common/arch/arm64/configs/gki_defconfig
-          echo 'CONFIG_ARM64_SIMD=y' >> ./common/arch/arm64/configs/gki_defconfig
+          echo 'CONFIG_ARM64_NEON=y' >> ./arch/arm64/configs/gki_defconfig
+          echo 'CONFIG_ARM64_SIMD=y' >> ./arch/arm64/configs/gki_defconfig
 
           
       - name: 启用网络功能增强优化配置
