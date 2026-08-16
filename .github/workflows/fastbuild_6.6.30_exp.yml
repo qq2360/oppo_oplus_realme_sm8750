@@ -465,10 +465,6 @@ jobs:
         run: |
           cd kernel_workspace
           cd common
-          # Add uksm patch
-          wget https://github.com/$GITHUB_REPOSITORY/raw/refs/heads/$GITHUB_REF_NAME/other_patch/uksm-v6.6.patch
-          patch -p1 -F 3 < uksm-v6.6.patch || true
-          echo "CONFIG_UKSM=y" >> ./arch/arm64/configs/gki_defconfig
           sed -i 's/SCHED_FEAT(HRTICK, false)/SCHED_FEAT(HRTICK, true)/' kernel/sched/features.h
           sed -i 's/SCHED_FEAT(SIS_PROP, false)/SCHED_FEAT(SIS_PROP, true)/' kernel/sched/features.h
           cd ..
